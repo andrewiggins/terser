@@ -30,6 +30,28 @@ describe("annotations", () => {
             var code = result.code;
             assert.strictEqual(code, "var a=/* */function(){foo()}();");
         });
+        it("Should keep #__PURE__ hint if keep_annotations option is true and function is retained", function() {
+            var result = Terser.minify("var a = /*#__PURE__*/(function(){ foo(); })();", {
+                output: {
+                    comments: "all",
+                    keep_annotations: true,
+                    beautify: false,
+                }
+            });
+            var code = result.code;
+            assert.strictEqual(code, "var a=/*#__PURE__*/function(){foo()}();");
+        });
+        it("Should drop #__PURE__ hint if keep_annotations option is true and function is dropped", function() {
+            var result = Terser.minify("//@__PURE__ comment1 #__PURE__ comment2\n foo(), bar();", {
+                output: {
+                    comments: "all",
+                    keep_annotations: true,
+                    beautify: false,
+                }
+            });
+            var code = result.code;
+            assert.strictEqual(code, "//  comment1   comment2\nbar();");
+        });
     });
     describe("#__INLINE__", () => {
         it("Adds an annotation", () => {

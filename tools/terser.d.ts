@@ -99,6 +99,7 @@ export interface OutputOptions {
     beautify?: boolean;
     braces?: boolean;
     comments?: boolean | 'all' | 'some' | RegExp | Function;
+    keep_annotations?: boolean;
     ecma?: ECMA;
     ie8?: boolean;
     indent_level?: number;
